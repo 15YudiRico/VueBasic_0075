@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGD8 Vue JS</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ game.judul }}</h1>
+        
+        <div>
+            <input v-model="tebakan" placeholder="Tebak angka..."/>
+        </div>
+        
+        <div>
+            <button @click="tebak">Tebak</button>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el:"#app",
+        data: {
+            game : {
+                judul: "Game Tebak Angka",
+                kesalahan: 3,
+                tebakan:0,
+                angka: Math.floor(Math.random()*10)+1
+            }
+        },
+        methods : {
+           tebak(){
+               if(tebakan == angka){
+                   return "benar";
+               }else{
+                   return this.game.kesalahan--;
+               }
+           } 
+        }
+    });
+</script>
+</html>
