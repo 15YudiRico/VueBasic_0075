@@ -9,36 +9,84 @@
 <body>
     <div id="app">
         <h1>{{ game.judul }}</h1>
-        
-        <div>
-            <input v-model="tebakan" placeholder="Tebak angka..."/>
-        </div>
-        
-        <div>
-            <button @click="tebak">Tebak</button>
+            <input type="number" v-model="game.tebakan" :disabled="disable"/>
+            <button @click="tebak" :disabled="disable">Tebak Angka</button>
+            <p>Kata Jawaban: {{ game.angka }}</p>
+            <p>Kesempatan : {{ game.kesempatan }}</p>
+
+            <p v-show="benar">Jawaban kamu benar</p>
+            <p v-show="salah">Jawaban kamu salah</p>
+             <p v-show="kalah">Ingin main lagi ?</p>
+
+        <button v-show="salah" @click="cobaLagi">Coba Lagi</button>
+        <button v-show="kalah" @click="mainLagi">Main Lagi</button>
+    </div>
+    
+    <div id="container">
+        <div id="footer">
+            <center><p>Yudi Rico Napitupulu | 190710075 | A</p></center>
         </div>
     </div>
 </body>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+    #footer{
+        position:absolute;
+        bottom:0;
+        width:100%;
+        height:60px;
+        background:#6cf;
+    }
+</style>
 <script>
-    new Vue({
-        el:"#app",
-        data: {
-            game : {
-                judul: "Game Tebak Angka",
-                kesalahan: 3,
-                tebakan:0,
-                angka: Math.floor(Math.random()*10)+1
-            }
-        },
-        methods : {
-           tebak(){
-               if(tebakan == angka){
-                   return "benar";
-               }else{
-                   return this.game.kesalahan--;
-               }
-           } 
+   new Vue({
+    el: "#app",
+    data: {
+      game: {
+        judul: 'Game Tebak Angka',
+        tebakan: 0,
+        kesempatan: 3,
+        angka: Math.floor(Math.random() * 10) + 1
+      },
+      teks: "",
+      salah: null,
+      benar: null,
+      kalah: null,
+      disable: false,
+    },
+    methods: {
+      tebak() {
+        if (this.game.tebakan == this.game.angka) {
+          this.benar = true;
+        } else {
+          this.salah = true;
+          this.disable = true;
+          this.game.kesempatan--;
+          if (this.game.kesempatan == 0) {
+            this.kalah = true;
+            this.salah = null;
+          }
         }
-    });
+      },
+      cobaLagi() {
+        this.disable = false
+        this.salah = null
+      },
+      mainLagi() {
+        this.game.angka = Math.floor(Math.random() * 10) + 1
+        this.game.kesempatan = 3
+        this.kalah = null
+        this.salah = null
+        this.benar = null
+        this.disable = false
+        this.game.tebakan = 0
+      }
+    },
+
+  });
 </script>
 </html>
