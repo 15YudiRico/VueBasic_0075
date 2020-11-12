@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas VueJS Basic</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="body">
+        <div class="card" style="width: 80%;">
+            <form v-on:submit.prevent="addTodo">
+                <div class="form-group">
+                    <label for="todoInput">TO DO?</label><br>
+                    <input type="text" v-model="newtodo" name="todo" style="width: 50%;">
+                </div>
+                <div class="form-group">
+                    <label for="prioritas">Prioritas</label>
+                    <select class="form-control" v-model="newpriority" name="priority" style="width: fit-content;">
+                    <option>Select priority</option>
+                    <option value="Penting">Penting</option>
+                    <option value="Biasa">Biasa</option>
+                    <option value="Tidak Penting">Tidak Penting</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="catatan">Keterangan</label>
+                    <textarea class="form-control" rows="2" v-model="newnote" name="note"></textarea>
+                </div>
+                <button type="button" @click="formReset" class="btn btn-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div> <br>
+        <div  style="width: 80%; background: #7ee250d2;" >
+            <h1>TodoList</h1>
+        </div>
+        <div is="todo-item" 
+            v-for="(todo,priority,note) in todos" 
+            v-bind:todo="todo.todo" 
+            v-bind:priority="todo.priority" 
+            v-bind:note="todo.note"
+            v-on:done="todos.splice(index,1)">
+        </div>
+    </div>
+    <div id="container">
+        <div id="footer">
+            <center><p>Yudi Rico Napitupulu | 190710075 | A</p></center>
+        </div>
+    </div>
+</body>
+<style>
+    form{
+      background-color:#c5cf38 ;
+      padding: 10px;
+    }
+    body{
+        max-width: 900px;
+        margin: auto;
+        background: #f0afaf;
+    }
+    #footer {
+        position:0px;
+        bottom:0;
+        width:80%;
+        height:60px;
+        background:#6cf;
+    }
+</style>
+<script>
+    Vue.component('todo-item',{
+      template:"\
+      <div class='card' style='width:80%; background-color:#EC524B; color:white; padding:13px;'>\
+      <h2>  {{todo}}</h2><br>\
+      <h3>  {{priority}}</h3><br>\
+      <p>   {{note}}</p><hr>\
+      <button @click='$emit(\"done\")'class='btn btn-success'>Done</button>\
+      </div>\"",
+      props:['todo','priority','note']
+    })
+    new Vue({
+        el:"#body",
+        data:{
+            newtodo:'',
+            newpriority:'',
+            newnote:'',
+        todos:[{
+            todo:'',
+            priority:'',
+            note:'',
+        }],
+        items:[],
+        },
+        methods:{
+            addTodo:function(){
+                this.todos.push({
+                    todo:this.newtodo,
+                    priority:this.newpriority,
+                    note:this.newnote,
+                });
+                this.newtodo='';
+                this.newpriority='';
+                this.newnote='';
+                  
+            },
+            deleteTodo:function(index){
+                this.array.splice(index,1);
+            },
+            formReset: function(){
+                form.reset();
+            }
+        }
+    });
+</script>
+</html>
